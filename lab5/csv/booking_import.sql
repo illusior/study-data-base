@@ -1,0 +1,47 @@
+USE lab5;
+
+ALTER TABLE lab5.room MODIFY price DECIMAL;
+
+LOAD DATA INFILE 'D:/Labs/data_base/lab5/csv/client.csv'
+INTO TABLE client 
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'D:/Labs/data_base/lab5/csv/hotel.csv'
+INTO TABLE hotel 
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'D:/Labs/data_base/lab5/csv/room_category.csv'
+INTO TABLE room_category
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'D:/Labs/data_base/lab5/csv/room.csv'
+INTO TABLE room
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'D:/Labs/data_base/lab5/csv/booking.csv'
+INTO TABLE booking 
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'D:/Labs/data_base/lab5/csv/room_in_booking.csv'
+INTO TABLE room_in_booking
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+INSERT INTO room () VALUES (1, 1, 3, 28, 8504.00);
