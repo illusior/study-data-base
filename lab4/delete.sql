@@ -1,8 +1,0 @@
-USE lab4_task1;
-
-SET SQL_SAFE_UPDATES = 0;
-
-DELETE FROM dish;
-DELETE FROM dish WHERE id_dish = 0;
-
-SET SQL_SAFE_UPDATES = 1;
