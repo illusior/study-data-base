@@ -1,6 +1,6 @@
 USE lab6;
 
--- 1. Добавить внешние ключи.
+-- 1. Р”РѕР±Р°РІРёС‚СЊ РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё.
 
 ALTER TABLE dealer
     ADD CONSTRAINT fk_dealer_company FOREIGN KEY (id_company)
@@ -26,18 +26,18 @@ ALTER TABLE `order`
     ADD CONSTRAINT fk_order_dealer FOREIGN KEY (id_dealer)
         REFERENCES dealer (id_dealer);
 
--- 2. Выдать информацию по всем заказам лекарства “Кордеон” компании “Аргус” с указанием названий аптек, дат, объема заказов.
+-- 2. Р’С‹РґР°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ РїРѕ РІСЃРµРј Р·Р°РєР°Р·Р°Рј Р»РµРєР°СЂСЃС‚РІР° вЂњРљРѕСЂРґРµСЂРѕРЅвЂќ РєРѕРјРїР°РЅРёРё вЂњРђСЂРіСѓСЃвЂќ СЃ СѓРєР°Р·Р°РЅРёРµРј РЅР°Р·РІР°РЅРёР№ Р°РїС‚РµРє, РґР°С‚, РѕР±СЉРµРјР° Р·Р°РєР°Р·РѕРІ.
 
 SET @ARGUS_COMPANY_ID = (
     SELECT id_company
     FROM company
-    WHERE name = 'Аргус'
+    WHERE name = 'ГЂГ°ГЈГіГ±'
 );
 
 SET @CORDEON_MEDICINE_ID = (
     SELECT id_medicine
     FROM medicine
-    WHERE name = 'Кордеон'
+    WHERE name = 'ГЉГ®Г°Г¤ГҐГ®Г­'
 );
 
 SET @PRODUCTION_ID = (
@@ -53,7 +53,7 @@ FROM `order` o
 WHERE o.id_production = @PRODUCTION_ID
 ORDER BY quantity;
 
--- 3. Дать список лекарств компании “Фарма”, на которые не были сделаны заказы до 25 января.
+-- 3. Р”Р°С‚СЊ СЃРїРёСЃРѕРє Р»РµРєР°СЂСЃС‚РІ РєРѕРјРїР°РЅРёРё вЂњР¤Р°СЂРјР°вЂќ, РЅР° РєРѕС‚РѕСЂС‹Рµ РЅРµ Р±С‹Р»Рё СЃРґРµР»Р°РЅС‹ Р·Р°РєР°Р·С‹ РґРѕ 25 СЏРЅРІР°СЂСЏ.
 
 SET @TASK_3_DATE = DATE('2019-01-25');
 
@@ -63,17 +63,17 @@ WHERE m.id_medicine NOT IN
       (SELECT p.id_medicine
        FROM `order` o
                 LEFT JOIN production p on o.id_production = p.id_production
-                JOIN company c on p.id_company = c.id_company AND c.name = 'Фарма'
+                JOIN company c on p.id_company = c.id_company AND c.name = 'Г”Г Г°Г¬Г '
        WHERE o.date < @TASK_3_DATE);
 
--- 4. Дать минимальный и максимальный баллы лекарств каждой фирмы, которая оформила не менее 120 заказов.
+-- 4. Р”Р°С‚СЊ РјРёРЅРёРјР°Р»СЊРЅС‹Р№ Рё РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ Р±Р°Р»Р»С‹ Р»РµРєР°СЂСЃС‚РІ РєР°Р¶РґРѕР№ С„РёСЂРјС‹, РєРѕС‚РѕСЂР°СЏ РѕС„РѕСЂРјРёР»Р° РЅРµ РјРµРЅРµРµ 120 Р·Р°РєР°Р·РѕРІ.
 SELECT p.id_company, MIN(p.rating) AS min_rating, MAX(p.rating) AS max_rating, COUNT(*) AS count
 FROM `order` o
          JOIN production p on o.id_production = p.id_production
 GROUP BY p.id_company
 HAVING count > 120;
 
--- 5. Дать списки сделавших заказы аптек по всем дилерам компании “AstraZeneca”. Если у дилера нет заказов, в названии аптеки проставить NULL.
+-- 5. Р”Р°С‚СЊ СЃРїРёСЃРєРё СЃРґРµР»Р°РІС€РёС… Р·Р°РєР°Р·С‹ Р°РїС‚РµРє РїРѕ РІСЃРµРј РґРёР»РµСЂР°Рј РєРѕРјРїР°РЅРёРё вЂњAstraZenecaвЂќ. Р•СЃР»Рё Сѓ РґРёР»РµСЂР° РЅРµС‚ Р·Р°РєР°Р·РѕРІ, РІ РЅР°Р·РІР°РЅРёРё Р°РїС‚РµРєРё РїСЂРѕСЃС‚Р°РІРёС‚СЊ NULL.
 
 SET @ASTRA_ZENECA_COMPANY_ID = (
     SELECT id_company
@@ -88,7 +88,7 @@ FROM `order` o
 WHERE d.id_company = @ASTRA_ZENECA_COMPANY_ID
 GROUP BY d.name;
 
--- 6. Уменьшить на 20% стоимость всех лекарств, если она превышает 3000, а длительность лечения не более 7 дней.
+-- 6. РЈРјРµРЅСЊС€РёС‚СЊ РЅР° 20% СЃС‚РѕРёРјРѕСЃС‚СЊ РІСЃРµС… Р»РµРєР°СЂСЃС‚РІ, РµСЃР»Рё РѕРЅР° РїСЂРµРІС‹С€Р°РµС‚ 3000, Р° РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ Р»РµС‡РµРЅРёСЏ РЅРµ Р±РѕР»РµРµ 7 РґРЅРµР№.
 
 SELECT *
 FROM production p
@@ -115,7 +115,7 @@ WHERE p.id_medicine IN (
     WHERE m.cure_duration <= 7
 );
 
--- 7. Добавить необходимые индексы.
+-- 7. Р”РѕР±Р°РІРёС‚СЊ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РёРЅРґРµРєСЃС‹.
 
 CREATE INDEX `IX_dealer_id_company`
     ON dealer (`id_company`);
