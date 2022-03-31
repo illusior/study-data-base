@@ -132,7 +132,7 @@ WHERE m.id_mark IN (SELECT * FROM `ps_bd-id_mark`);
 -- 7. Добавить необходимые индексы.
 
 CREATE INDEX IX_group_id_group
-    ON group (id_group);
+    ON `group` (id_group);
 
 CREATE INDEX IX_lesson_id_lesson
     ON lesson (id_lesson);
@@ -157,4 +157,3 @@ CREATE INDEX IX_student_id_student
 
 CREATE INDEX IX_student_id_group
     ON student (id_group);
-    
