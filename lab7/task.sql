@@ -96,7 +96,7 @@ FROM student st
 		SELECT sub.id_subject, sub.`name` AS subject_name, g.`name` AS group_name, g.id_group
 		FROM lesson l
 			JOIN `group` g ON g.id_group = l.id_group
-			JOIN subject sub ON sub.id_subject = l.id_subject
+			JOIN `subject` sub ON sub.id_subject = l.id_subject
 		WHERE g.`name` = 'ВМ'
 		GROUP BY sub.`name`
 	) AS vm_subject ON vm_subject.id_group = st.id_group
@@ -131,4 +131,30 @@ WHERE m.id_mark IN (SELECT * FROM `ps_bd-id_mark`);
 
 -- 7. Добавить необходимые индексы.
 
+CREATE INDEX IX_group_id_group
+    ON group (id_group);
 
+CREATE INDEX IX_lesson_id_lesson
+    ON lesson (id_lesson);
+
+CREATE INDEX IX_lesson_id_group
+    ON lesson (id_group);
+
+CREATE INDEX IX_lesson_id_subject
+    ON lesson (id_subject);
+    
+CREATE INDEX IX_mark_id_lesson
+    ON mark (id_lesson);
+    
+CREATE INDEX IX_mark_id_student
+    ON mark (id_student);
+    
+CREATE INDEX IX_subject_id_subject
+    ON `subject` (id_subject);
+
+CREATE INDEX IX_student_id_student
+    ON student (id_student);
+
+CREATE INDEX IX_student_id_group
+    ON student (id_group);
+    
