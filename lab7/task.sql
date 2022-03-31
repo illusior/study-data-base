@@ -35,8 +35,8 @@ CREATE VIEW it_student_mark AS
 SELECT st.`name`, m.mark 
 FROM mark m
 	JOIN lesson l ON l.id_lesson = m.id_lesson
-    JOIN `subject` s ON s.id_subject = l.id_subject AND s.`name` = 'Информатика'
-    JOIN student st ON st.id_student = m.id_student;
+	JOIN `subject` s ON s.id_subject = l.id_subject AND s.`name` = 'Информатика'
+	JOIN student st ON st.id_student = m.id_student;
 
 SELECT * FROM it_student_mark;
 
@@ -68,9 +68,9 @@ CALL students_debtor_procedure(2);
 SELECT sub.`name`, COUNT(DISTINCT st.id_student) AS student_amount, AVG(m.mark) AS average_mark
 FROM lesson l
 	JOIN `group` g ON g.id_group = l.id_group
-    JOIN student st ON st.id_group = g.id_group
-    JOIN `subject` sub ON sub.id_subject = l.id_subject
-    JOIN mark m ON m.id_lesson = l.id_lesson
+	JOIN student st ON st.id_group = g.id_group
+	JOIN `subject` sub ON sub.id_subject = l.id_subject
+	JOIN mark m ON m.id_lesson = l.id_lesson
 GROUP BY l.id_subject
 HAVING student_amount > 35;
 
@@ -83,7 +83,7 @@ SELECT id_student, id_subject, mark, `date`
 FROM mark m
 	JOIN (
 		SELECT id_lesson, id_subject, `date`
-        FROM lesson l
+        	FROM lesson l
 			JOIN `group` g ON g.id_group = l.id_group
 		WHERE g.`name` = 'ВМ'
     ) AS vm_lesson ON vm_lesson.id_lesson = m.id_lesson;
