@@ -71,6 +71,7 @@ FROM lesson l
 	JOIN student st ON st.id_group = g.id_group
 	JOIN `subject` sub ON sub.id_subject = l.id_subject
 	JOIN mark m ON m.id_lesson = l.id_lesson
+WHERE m.id_student = st.id_student
 GROUP BY l.id_subject
 HAVING student_amount > 35;
 
