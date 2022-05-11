@@ -1,0 +1,214 @@
+// 3. Блюда, продукты, рецепты блюд.
+
+db = connect('localhost:27017');
+
+db.dropDatabase();
+
+db.createCollection('dish');
+
+// 3.1 Отобразить коллекции базы данных
+print('Отобразить коллекции базы данных');
+print(db.getCollectionNames());
+
+// 3.2.1 Вставка одной записи insertOne
+db.getCollection('dish').insertOne({
+    name: "Borch",
+    cost: 60,
+    rating: 48,
+    gluten_free: true,
+    recipe: {
+        name: "borch_default",
+        cooking_time: 15,
+        ingredients: [{
+            name: "beef",
+            amount: 1,
+            weight: 500
+        },
+        {
+            name: "beet",
+            amount: 2,
+            weight: 50
+        },
+        {
+            name: "potato",
+            amount: 3,
+            weight: 40
+        }]
+    },
+    dishware: [{
+        name: "bowl",
+        amount: 1
+    },
+    {
+        name: "spoon",
+        amount: 1
+    }],
+}
+);
+
+// 3.2.2 Вставка нескольких записей insertMany
+db.getCollection('dish').insertMany([{
+    name: "Pizza Salami",
+    cost: 400,
+    rating: 67,
+    recipe: {
+        name: "pizza_salami",
+        cooking_time: 30,
+        ingredients: [{
+            name: "flour",
+            amount: 1,
+            weight: 550
+        },
+        {
+            name: "water",
+            amount: 1,
+            weight: 250
+        },
+        {
+            name: "salt",
+            amount: 1,
+            weight: 7
+        },
+        {
+            name: "tomato",
+            amount: 3,
+            weight: 150
+        },
+        {
+            name: "cheese",
+            amount: 1,
+            weight: 100
+        },
+        {
+            name: "sausage",
+            amount: 1,
+            weight: 200
+        }
+        ]
+    },
+    dishware: [{
+        name: "large_plate",
+        amount: 1
+    },
+    {
+        name: "dish",
+        amount: 4
+    },
+    {
+        name: "pizza_knife",
+        amount: 1
+    },
+    {
+        name: "scrapper",
+        amount: 1
+    }],
+},
+{
+    name: "Pelmeni",
+    cost: 60,
+    rating: 90,
+    recipe: {
+        name: "pelmeni_default",
+        cooking_time: 10,
+        ingredients: [{
+            name: "pelmeni",
+            amount: 1,
+            weight: 500
+        }]
+    },
+    dishware: [{
+        name: "bowl",
+        amount: 1
+    },
+    {
+        name: "spoon",
+        amount: 1
+    }],
+}
+]);
+
+// 3.3.1 Удаление одной записи по условию
+// db.getCollection('dish').deleteOne({ name: "Pelmeni" });
+
+// 3.3.2 Удаление нескольких записей по условию
+// db.getCollection('dish').deleteMany({ rating: { $lt: 50 } });
+
+// 3.4.1 Поиск записи по ID
+print('Поиск записи по ID');
+printjson(db.getCollection('dish').findOne({ _id: ObjectId("627bd256772e8dcca066e18a") }));
+
+// 3.4.2 Поиск записи по атрибуту первого уровня
+print('Поиск записи по атрибуту первого уровня');
+printjson(db.getCollection('dish').findOne({ name: "Pelmeni" }));
+
+// 3.4.3 Поиск записи по вложенному атрибуту
+print('Поиск записи по вложенному атрибуту');
+printjson(db.getCollection('dish').findOne({ "dishware.name": "bowl" }));
+
+// 3.4.4 Поиск записи по нескольким атрибутам
+print('Поиск записи по нескольким атрибутам');
+printjson(db.getCollection('dish').findOne({
+    "$and": [
+        { rating: { $lt: 50 } },
+        { "dishware.name": "bowl" }
+    ]
+}));
+
+// 3.4.5 Поиск записи по одному из условий
+print('Поиск записи по одному из условий');
+printjson(db.getCollection('dish').findOne({
+    "$or": [
+        { rating: { $gt: 25 } },
+        { cost: { $lt: 500 } }
+    ]
+}));
+
+// 3.4.6 Поиск с использованием оператора сравнения
+print('Поиск с использованием оператора сравнения');
+printjson(db.getCollection('dish').find({ rating: { $gt: 25 } }));
+
+// 3.4.7 Поиск с использованием двух операторов сравнения
+print('Поиск с использованием двух операторов сравнения');
+printjson(db.getCollection('dish').find({ rating: { $gt: 25, $lt: 100 } }));
+
+// 3.4.8 Поиск по значению в массиве
+print('Поиск по значению в массиве');
+printjson(db.getCollection('dish').find({
+    "dishware": {
+        $elemMatch: {
+            name: "bowl"
+        }
+    }
+}));
+
+// 3.4.9 Поиск по кол-ву элементов в массиве
+print('Поиск по кол-ву элементов в массиве');
+printjson(db.getCollection('dish').find({
+    "dishware": {
+        $size: 2
+    }
+}));
+
+// 3.4.10 Поиск записи без атрибута
+print('Поиск записи без атрибута');
+printjson(db.getCollection('dish').find(
+    { gluten_free: { $exists: false } }
+));
+
+// 3.5.1 Изменить значение у записи
+db.getCollection('dish').updateOne(
+    { name: "Pizza Salami" },
+    { $set: { cost: 500 } }
+);
+
+// 3.5.2 Удалить атрибут у записи
+db.getCollection('dish').updateOne(
+    { name: "Pizza Salami" },
+    { $unset: { rating: 0 } }
+);
+
+// 3.5.3 Добавить атрибут у записи
+db.getCollection('dish').updateOne(
+    { name: "Pizza Salami" },
+    { $set: { country: "Italy" } }
+);
